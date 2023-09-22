@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="GenSim: Supersizing Simulation Task Generation in Robotics with LLM.">
+  <meta name="keywords" content="Simulation, LLMs, Robotics">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GenSim: Supersizing Simulation Task Generation in Robotics with LLM</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+
+  <script>
+    function updateGPT() {
+      var task = document.getElementById("single-menu-tasks").value;
+      var inst = document.getElementById("single-menu-instances").value;
+
+      console.log("gpt", task, inst)
+
+      var video = document.getElementById("single-task-result-video");
+      video.src = "media/all_task_videos/" + 
+                  task + 
+                  "-videos/" +
+                  "0000" + 
+                  inst + 
+                  ".mp4";
+      video.playbackRate = 2.0;
+      video.play();
+    }
+
+    function updateLlama() {
+      var task = document.getElementById("multi-menu-tasks").value;
+      var inst = document.getElementById("multi-menu-instances").value;
+
+      console.log("llama", task, inst)
+
+      var video = document.getElementById("multi-task-result-video");
+      video.src = "media/all_task_videos/" + 
+                  task + 
+                  "-videos/" +
+                  "0000" + 
+                  inst + 
+                  ".mp4";
+      console.log(video.src)
+      video.playbackRate = 2.0;
+      video.play();
+    }
+
+  </script>
+
+</head>
+<body>
+
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">GenSim: Supersizing Simulation Task Generation in Robotics with LLM</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Anonymous ICLR Submission</span>
+          </div>
+
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <!-- Gradio Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/spaces/Gen-Sim/Gen-Sim"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-smile"></i>
+                  </span>
+                  <span>Gradio Demo</span>
+                </a>
+              </span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-fullhd">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop height="100%">
+        <source src="media/common/gensim_teaser_v1.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+      </br>
+        <span class="dcliport">GenSim</span> uses LLMs to generate vast amounts of simulated robotic tasks.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Collecting large amounts of real-world interaction data to train general robotic policies is often prohibitively expensive, thus motivating the use of simulation data. However, existing methods for data generation have generally focused on scene-level diversity (e.g., object instances and poses) rather than task-level diversity, due to the human effort required to come up with novel primitive tasks that would be helpful in solving more complex tasks. This has made it challenging for policies trained on simulation data to exhibit significant task-level generalization. <br><br>
+
+            In this paper, we propose to automatically generate rich simulation environments and expert demonstrations by exploiting a large language model’s (LLM) grounded knowledge and coding ability. Our approach, dubbed GenSim, has two modes: goal-directed generation, wherein a target task is given to the LLM, and the LLM proposes a task curriculum to solve the target task, and exploratory generation, wherein the LLM  bootstraps from previous tasks and iteratively proposes novel tasks that would be helpful in solving more complex tasks that require composing skills learned from simpler tasks. <br><br>
+
+            We benchmark several  LLMs including GPT-4 and Code Llama and observe that simulation programs generated by LLMs can be used to generate demonstrations that yield significant improvements when the demonstrations are used as part of a  multitask policy training scheme. We further find that with minimal sim-to-real adaptation, the multitask policies pretrained on GPT-4-generated simulation tasks exhibit stronger transfer to unseen long-horizon tasks in the real world and outperform baselines by 30%.
+          </p>
+        </div>
+      </div>
+    </div>
+</section>
+    <!--/ Abstract. -->
+
+<section>
+    <div class="container is-full-width">
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-one-quarters">
+        <h2 class="title is-3">Generated Tasks</h2>
+
+        <div class="columns">
+          <div class="column has-text-centered">
+            <h3 class="title is-5">GPT 3.5</h3>
+
+            Task  
+            <div class="select is-small">     
+              <select id="single-menu-tasks" onchange="updateGPT()">
+				<option value="align-ball-in-colored-boxes">align-ball-in-colored-boxes</option>
+				<option value="align-ball-in-colored-zones">align-ball-in-colored-zones</option>
+				<option value="align-blocks-on-line">align-blocks-on-line</option>
+				<option value="align-box-corner">align-box-corner</option>
+				<option value="align-boxes-on-line">align-boxes-on-line</option>
+				<option value="align-cylinder-in-zone">align-cylinder-in-zone</option>
+				<option value="align-cylinders-box">align-cylinders-box</option>
+				<option value="align-cylinders-in-boxes">align-cylinders-in-boxes</option>
+				<option value="align-cylinders-in-zones">align-cylinders-in-zones</option>
+				<option value="align-pair-colored-blocks-along-line">align-pair-colored-blocks-along-line</option>
+				<option value="align-rope-along-line">align-rope-along-line</option>
+				<option value="align-rope-cross-zone">align-rope-cross-zone</option>
+				<option value="align-rope">align-rope</option>
+				<option selected="selected" value="align-spheres-in-colored-zones">align-spheres-in-colored-zones</option>
+				<option value="arrange-blocks-in-line">arrange-blocks-in-line</option>
+				<option value="assemble-single-car">assemble-single-car</option>
+				<option value="assembling-kits-seq">assembling-kits-seq</option>
+				<option value="assembling-kits">assembling-kits</option>
+				<option value="ball-on-box-on-container">ball-on-box-on-container</option>
+				<option value="block-insertion-in-corner-pyramid">block-insertion-in-corner-pyramid</option>
+				<option value="block-insertion">block-insertion</option>
+				<option value="block-on-cylinder-on-pallet">block-on-cylinder-on-pallet</option>
+				<option value="block-pyramid-with-limited-space">block-pyramid-with-limited-space</option>
+				<option value="block-pyramid">block-pyramid</option>
+				<option value="build-bridge">build-bridge</option>
+				<option value="build-car">build-car</option>
+				<option value="build-cylinder-structure">build-cylinder-structure</option>
+				<option value="build-house">build-house</option>
+				<option value="build-two-circles">build-two-circles</option>
+				<option value="build-wheel">build-wheel</option>
+				<option value="code-blue-on-red-cylinder">code-blue-on-red-cylinder</option>
+				<option value="code-cylinder-in-colorful-container">code-cylinder-in-colorful-container</option>
+				<option value="code-cylinder-in-zone">code-cylinder-in-zone</option>
+				<option value="code-rainbow-pyramid">code-rainbow-pyramid</option>
+				<option value="code-stack-wall">code-stack-wall</option>
+				<option value="color-blocks-in-cylinder-maze">color-blocks-in-cylinder-maze</option>
+				<option value="color-coded-blocks-on-corner">color-coded-blocks-on-corner</option>
+				<option value="color-coordinated-arch-construction">color-coordinated-arch-construction</option>
+				<option value="color-coordinated-block-and-sphere-arrangement">color-coordinated-block-and-sphere-arrangement</option>
+				<option value="color-coordinated-block-bowl-sorting">color-coordinated-block-bowl-sorting</option>
+				<option value="color-coordinated-block-bridge">color-coordinated-block-bridge</option>
+				<option value="color-coordinated-block-corner-alignment">color-coordinated-block-corner-alignment</option>
+				<option value="color-coordinated-block-insertion">color-coordinated-block-insertion</option>
+				<option value="color-coordinated-block-pyramid-construction">color-coordinated-block-pyramid-construction</option>
+				<option value="color-coordinated-block-shifting">color-coordinated-block-shifting</option>
+				<option value="color-coordinated-block-tower">color-coordinated-block-tower</option>
+				<option value="color-coordinated-bowl-and-cylinder-matching">color-coordinated-bowl-and-cylinder-matching</option>
+				<option value="color-coordinated-box-in-pallet">color-coordinated-box-in-pallet</option>
+				<option value="color-coordinated-container-and-block-matching">color-coordinated-container-and-block-matching</option>
+				<option value="color-coordinated-container-fill">color-coordinated-container-fill</option>
+				<option value="color-coordinated-cylinder-alignment">color-coordinated-cylinder-alignment</option>
+				<option value="color-coordinated-cylinder-and-box-insertion">color-coordinated-cylinder-and-box-insertion</option>
+				<option value="color-coordinated-cylinder-in-box">color-coordinated-cylinder-in-box</option>
+				<option value="color-coordinated-cylinder-stand-assembly">color-coordinated-cylinder-stand-assembly</option>
+				<option value="color-coordinated-cylinder-stand-stack">color-coordinated-cylinder-stand-stack</option>
+				<option value="color-coordinated-cylinder-tower">color-coordinated-cylinder-tower</option>
+				<option value="color-coordinated-insertion-and-sweeping">color-coordinated-insertion-and-sweeping</option>
+				<option value="color-coordinated-insertion">color-coordinated-insertion</option>
+				<option value="color-coordinated-line-blocks">color-coordinated-line-blocks</option>
+				<option value="color-coordinated-sphere-and-cylinder-assembly">color-coordinated-sphere-and-cylinder-assembly</option>
+				<option value="color-coordinated-sphere-insertion">color-coordinated-sphere-insertion</option>
+				<option value="color-coordinated-sphere-on-pallet-pyramid">color-coordinated-sphere-on-pallet-pyramid</option>
+				<option value="color-coordinated-zone-arrangement">color-coordinated-zone-arrangement</option>
+				<option value="color-coordinated-zone-stacking">color-coordinated-zone-stacking</option>
+				<option value="color-ordered-blocks-on-pallet">color-ordered-blocks-on-pallet</option>
+				<option value="color-ordered-container-arrangement">color-ordered-container-arrangement</option>
+				<option value="color-ordered-insertion-new">color-ordered-insertion-new</option>
+				<option value="color-ordered-insertion">color-ordered-insertion</option>
+				<option value="color-sequenced-block-in-container">color-sequenced-block-in-container</option>
+				<option value="color-sequenced-pyramid-packing">color-sequenced-pyramid-packing</option>
+				<option value="color-sequenced-sphere-placement">color-sequenced-sphere-placement</option>
+				<option value="color-sorted-block-race">color-sorted-block-race</option>
+				<option value="color-sorted-container-stack">color-sorted-container-stack</option>
+				<option value="color-specific-container-fill">color-specific-container-fill</option>
+				<option value="construct-colorful-arch">construct-colorful-arch</option>
+				<option value="construct-corner-blocks">construct-corner-blocks</option>
+				<option value="construct-corner-building">construct-corner-building</option>
+				<option value="container-block-pyramid-assembly">container-block-pyramid-assembly</option>
+				<option value="container-block-sorting">container-block-sorting</option>
+				<option value="corner-block-challenge">corner-block-challenge</option>
+				<option value="corner-sort-cylinders">corner-sort-cylinders</option>
+				<option value="create-pyramid-blocks-and-container">create-pyramid-blocks-and-container</option>
+				<option value="create-pyramid-with-color-coded-ells">create-pyramid-with-color-coded-ells</option>
+				<option value="cylinder-and-box-arrangement">cylinder-and-box-arrangement</option>
+				<option value="cylinder-balancing-and-placement">cylinder-balancing-and-placement</option>
+				<option value="cylinder-balancing-on-blocks">cylinder-balancing-on-blocks</option>
+				<option value="cylinder-corner-insert">cylinder-corner-insert</option>
+				<option value="cylinder-line-placement">cylinder-line-placement</option>
+				<option value="cylinder-ring-stack">cylinder-ring-stack</option>
+				<option value="cylinder-stand-alignment">cylinder-stand-alignment</option>
+				<option value="guided-block-path">guided-block-path</option>
+				<option value="insert-blocks-into-pyramid">insert-blocks-into-pyramid</option>
+				<option value="insert-blocks-lineup">insert-blocks-lineup</option>
+				<option value="insert-color-blocks-into-cylinders">insert-color-blocks-into-cylinders</option>
+				<option value="insert-ell-along-square-path">insert-ell-along-square-path</option>
+				<option value="insert-sphere-into-container">insert-sphere-into-container</option>
+				<option value="insertion-in-color-sequenced-zones">insertion-in-color-sequenced-zones</option>
+				<option value="multi-level-block-construction">multi-level-block-construction</option>
+				<option value="multi-level-insertion-and-zone-matching">multi-level-insertion-and-zone-matching</option>
+				<option value="multi-level-pyramid-construction">multi-level-pyramid-construction</option>
+				<option value="multicolor-block-bridge">multicolor-block-bridge</option>
+				<option value="nested-boxes">nested-boxes</option>
+				<option value="packaging-boxes-pairs">packaging-boxes-pairs</option>
+				<option value="packaging-boxes">packaging-boxes</option>
+				<option value="packaging-shapes">packaging-shapes</option>
+				<option value="palette-color-match">palette-color-match</option>
+				<option value="palletizing-boxes">palletizing-boxes</option>
+				<option value="place-ball-in-elevated-bowl">place-ball-in-elevated-bowl</option>
+				<option value="place-blue-on-line-ends">place-blue-on-line-ends</option>
+				<option value="place-box-in-pallet">place-box-in-pallet</option>
+				<option value="place-red-in-green">place-red-in-green</option>
+				<option value="push-piles-into-letter">push-piles-into-letter</option>
+				<option value="put-block-in-bowl">put-block-in-bowl</option>
+				<option value="put-blocks-between-zones">put-blocks-between-zones</option>
+				<option value="put-blues-around-red">put-blues-around-red</option>
+				<option value="put-kit-in-bowl">put-kit-in-bowl</option>
+				<option value="pyramid-blocks-assemble">pyramid-blocks-assemble</option>
+				<option value="rainbow-stack">rainbow-stack</option>
+				<option value="rotate-and-insert-cylinder">rotate-and-insert-cylinder</option>
+				<option value="separating-piles">separating-piles</option>
+				<option value="sequential-block-insertion">sequential-block-insertion</option>
+				<option value="sequential-insertion-and-stacking">sequential-insertion-and-stacking</option>
+				<option value="sort-and-assemble-block-castle">sort-and-assemble-block-castle</option>
+				<option value="sort-and-stack-clr-blocks">sort-and-stack-clr-blocks</option>
+				<option value="sort-insert-color-coordinated-blocks">sort-insert-color-coordinated-blocks</option>
+				<option value="sorting-blocks-into-pallets">sorting-blocks-into-pallets</option>
+				<option value="sphere-align-stand">sphere-align-stand</option>
+				<option value="sphere-container-color-match">sphere-container-color-match</option>
+				<option value="stack-block-pyramid-seq">stack-block-pyramid-seq</option>
+				<option value="stack-block-pyramid">stack-block-pyramid</option>
+				<option value="stack-blocks-in-container">stack-blocks-in-container</option>
+				<option value="stack-boxes-in-pallet">stack-boxes-in-pallet</option>
+				<option value="stack-color-coordinated-blocks">stack-color-coordinated-blocks</option>
+				<option value="stack-cylinder-on-bowl">stack-cylinder-on-bowl</option>
+				<option value="stack-three-layer-red-wall">stack-three-layer-red-wall</option>
+				<option value="sweep-and-sort-blocks">sweep-and-sort-blocks</option>
+				<option value="sweeping-piles">sweeping-piles</option>
+				<option value="symmetric-block-bridge-construction">symmetric-block-bridge-construction</option>
+				<option value="towers-of-hanoi-seq">towers-of-hanoi-seq</option>
+				<option value="towers-of-hanoi">towers-of-hanoi</option>
+				<option value="vertical-insertion-blocks">vertical-insertion-blocks</option>
+              </select>
+            </div>
+            instance
+            <div class="select is-small">
+              <select id="single-menu-instances" onchange="updateGPT()">
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03" selected="selected">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              </select>
+            </div>
+            <br/>
+            <br/>
+
+            <video id="single-task-result-video"
+                   controls
+                   muted
+                   autoplay
+                   loop
+                   width="50%">
+              <source src="media/all_task_videos/align-spheres-in-colored-zones-videos/000003.mp4"
+                      type="video/mp4">
+            </video>
+
+
+          </div>
+
+        </div>
+
+	    <!--/ Paper video. -->
+	    <div class="column has-text-centered">
+	    	Checkout <a target="_blank" href="https://huggingface.co/spaces/Gen-Sim/Gen-Sim">Gradio</a> for live demos!
+	    </div>
+        </br>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-widescreen">
+
+    <div class="rows">
+
+
+    <!-- Animation. -->
+    <div class="rows is-centered ">
+      <div class="row is-full-width">
+        <h2 class="title is-3"><span class="dcliport">GenSim</span></h2>
+
+        <h3 class="title is-4">Overview</h3>
+        <img src="media/common/teaser_figure.png" class="interpolation-image" 
+         alt="Interpolate start reference image." />
+        <br/>
+
+        <!-- Re-rendering. -->
+        <h3 class="title is-4">Pipeline</h3>
+        <img src="media/common/pipeline_figure.png" class="interpolation-image" 
+         alt="Interpolate start reference image." />
+        <br/>
+        <br/>
+
+       </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-widescreen">
+
+    <div class="rows">
+
+
+    <!-- Animation. -->
+    <div class="rows is-centered ">
+      <div class="row is-full-width">
+        <h2 class="title is-3">Real-Robot Tests</h2>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="https://github.com/nerfies/nerfies.github.io" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website template is borrowed from  <a
+              href="https://github.com/nerfies/nerfies.github.io">nerfie</a> 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
