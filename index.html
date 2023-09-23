@@ -157,7 +157,7 @@
 
         <div class="columns">
           <div class="column has-text-centered">
-            <h3 class="title is-5">GPT 3.5</h3>
+            <h3 class="title is-5">GPT 4</h3>
 
             Task  
             <div class="select is-small">     
@@ -383,12 +383,49 @@
 
 
     <!-- Animation. -->
-    <div class="rows is-centered ">
-      <div class="row is-full-width">
-        <h2 class="title is-3">Real-Robot Tests</h2>
 
-      </div>
-    </div>
+    <div class="container is-full-width">
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-one-quarters">
+        <h2 class="title is-3">Real-Robot Experiments</h2>
+
+        <div class="columns">
+          <div class="column has-text-centered">
+            Task  
+            <div class="select is-small">     
+              <select id="single-menu-tasks" onchange="updateGPT()">
+				<option value="stack-block">stack-block</option>
+				<option value="put-block-in-bowl">put-block-in-bowl</option>
+				<option value="pair-blocks-on-line">pair-blocks-on-line</option>
+				<option value="pack-spheres">pack-spheres</option>
+				<option value="block-zone">block-zone</option>
+				<option value="block-tower-corner">block-tower-corner</option>
+				<option value="block-in-bowl-in-zone">block-in-bowl-in-zone</option>
+				<option value="align-cylinder-in-zone">align-cylinder-in-zone</option>
+				<option value="align-block-zone">align-block-zone</option>
+
+              </select>
+            </div>
+            instance
+            <div class="select is-small">
+              <select id="single-menu-instances" onchange="updateGPT()">
+              <option value="03" selected="selected">01</option>
+              </select>
+            </div>
+            <br/>
+            <br/>				
+            <video id="single-task-result-video"
+                   controls
+                   muted
+                   autoplay
+                   loop
+                   width="50%">
+              <source src="media/realworld_task_videos/align-cylinder-in-zone/000003.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
 
   </div>
 </section>
