@@ -74,12 +74,12 @@
     }
 
     function updateLlama() {
-      var task = document.getElementById("multi-menu-tasks").value;
-      var inst = document.getElementById("multi-menu-instances").value;
+      var task = document.getElementById("single-menu-tasks-llama").value;
+      var inst = document.getElementById("single-menu-instances-llama").value;
 
       console.log("llama", task, inst)
 
-      var video = document.getElementById("multi-task-result-video");
+      var video = document.getElementById("single-task-result-video-llama");
       video.src = "media/all_task_videos/" + 
                   task + 
                   "-videos/" +
@@ -177,11 +177,13 @@
     <!--/ Abstract. -->
 
 <section>
-    <div class="container is-full-width">
+  <div class="row">
+    <div class="container">
     <!-- Paper video. -->
+        <h2 class="title is-3 has-text-centered">Generated Task Library</h2>      
+
     <div class="columns is-centered has-text-centered">
-      <div class="column is-one-quarters">
-        <h2 class="title is-3">Generated Task Library</h2>
+      <div class="column is-half">
 
         <div class="columns">
           <div class="column has-text-centered">
@@ -329,29 +331,20 @@
                    muted
                    autoplay
                    loop
-                   width="50%">
-              <source src="media/all_task_videos/align-spheres-in-colored-zones-videos/000003.mp4"
+                   width="80%">
+              <source src="media/all_task_videos/cylinder-ring-stack-videos/000003.mp4"
                       type="video/mp4">
             </video>
-
-
           </div>
-
         </div>
-<section>
-    <div class="container is-full-width">
-    <!-- Paper video. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-one-quarters">
-        <h2 class="title is-3">Generated Task Library</h2>
+        </div>        
+        <div class="column is-half">
 
-        <div class="columns">
-          <div class="column has-text-centered">
-            <h3 class="title is-5">Code Llama</h3>
+            <h3 class="title is-5">Code Llama 13B Instruct (Finetuned)</h3>
 
             Task  
             <div class="select is-small">     
-              <select id="single-menu-tasks" onchange="updateLlama()">
+              <select id="single-menu-tasks-llama" onchange="updateLlama()">
 	<option value="code-stack-wall">code-stack-wall</option>
 	<option value="code-blue-on-red-cylinder">code-blue-on-red-cylinder</option>
 	<option value="code-ball-on-line">code-ball-on-line</option>
@@ -361,7 +354,7 @@
             </div>
             instance
             <div class="select is-small">
-              <select id="single-menu-instances" onchange="updateLlama()">
+              <select id="single-menu-instances-llama" onchange="updateLlama()">
               <option value="01"  selected="selected">01</option>
               <option value="02">02</option>
               <option value="03">03</option>
@@ -372,29 +365,27 @@
             <br/>
             <br/>
 
-            <video id="single-task-result-video"
+            <video id="single-task-result-video-llama"
                    controls
                    muted
                    autoplay
                    loop
-                   width="50%">
-              <source src="media/all_task_videos/align-spheres-in-colored-zones-videos/000003.mp4"
+                   width="80%">
+              <source src="media/all_task_videos/code-blue-on-red-cylinder-videos/000001.mp4"
                       type="video/mp4">
             </video>
 
-
-          </div>
-
-        </div>
 	    <!--/ Paper video. -->
-	    <div class="column has-text-centered">
-	    	Strongly recommend to checkout <a target="_blank" href="https://huggingface.co/spaces/Gen-Sim/Gen-Sim">Gradio</a> for live demos of generating your own task!
-	    </div>
+
         </br>
 
       </div>
+
     </div>
   </div>
+      <div class="column has-text-centered">
+        Strongly recommend to checkout <a target="_blank" href="https://huggingface.co/spaces/Gen-Sim/Gen-Sim">Gradio</a> for live demos of generating your own task!
+      </div>  
 </section>
 
 
@@ -431,15 +422,15 @@
 
 <section class="section">
   <div class="container is-max-widescreen">
-
     <div class="rows">
     <!-- Animation. -->
+    <h2 class="title is-3  has-text-centered">Real-Robot Experiments </h2>
 
     <div class="container  ">
     <!-- Paper video. -->
     <div class="columns is-centered has-text-centered">
-      <div class="column is-one-quarters">
-        <h2 class="title is-3">Real-Robot Experiments [CLIPort]</h2>
+      <div class="column is-half">
+        <h3 class="title is-3">CLIPort</h3>
 
         <div class="columns">
           <div class="column has-text-centered">
@@ -471,14 +462,15 @@
                    muted
                    autoplay
                    loop
-                   width="50%">
+                   width="80%">
               <source src="media/realworld_task_videos/pair-blocks-on-line/cliport10.mp4"
                       type="video/mp4">
             </video>
           </div>
         </div>
-      <div class="column is-one-quarters">
-        <h2 class="title is-3">Real-Robot Experiments [GenSim]</h2>
+    </div>        
+      <div class="column is-half">
+        <h3 class="title is-3">GenSim</h3>
         <div class="columns">
           <div class="column has-text-centered">
             Task  
@@ -508,7 +500,7 @@
                    muted
                    autoplay
                    loop
-                   width="50%">
+                   width="80%">
               <source src="media/realworld_task_videos/pair-blocks-on-line/gpt70.mp4"
                       type="video/mp4">
             </video>
