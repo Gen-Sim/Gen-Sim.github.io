@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GenSim: Generating Robotic Simulation Tasks via Large Language Models</title>
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  <link href="http://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -26,8 +26,17 @@
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
 
-
+ 
+ 
   <script>
+  function toggleCode() {
+    var code = document.getElementById('code');
+    if (code.style.display === 'none') {
+      code.style.display = 'block';
+    } else {
+      code.style.display = 'none';
+    }
+  }    
     function updateGPT() {
       var task = document.getElementById("single-menu-tasks").value;
       var inst = document.getElementById("single-menu-instances").value;
@@ -90,6 +99,86 @@
       video.playbackRate = 2.0;
       video.play();
     }
+    timeoutIds = [];
+
+    function populateDemo(imgs, num) {
+        // Get the expanded image
+        var expandImg = document.getElementById("expandedImg-" + num);
+        // Get the image text
+        var imgText = document.getElementById("imgtext-" + num);
+        var answer = document.getElementById("answer-" + num);
+
+        // Use the same src in the expanded image as the image being clicked on from the grid
+        expandImg.src = imgs.src.replace(".png", ".mp4");
+        var video = document.getElementById('demo-video-' + num);
+        // or video = $('.video-selector')[0];
+        video.pause()
+        video.load();
+        video.play();
+        video.removeAttribute('controls');
+
+        console.log(expandImg.src);
+        // Use the value of the alt attribute of the clickable image as text inside the expanded image
+        var qa = imgs.alt.split("[sep]");
+        imgText.innerHTML = qa[0];
+        answer.innerHTML = "";
+        // Show the container element (hidden with CSS)
+        expandImg.parentElement.style.display = "block";
+        for (timeoutId of timeoutIds) {
+            clearTimeout(timeoutId);
+        }
+
+        // NOTE (wliang): Modified from original to read from file instead
+        fetch(qa[1])
+            .then(response => response.text())
+            .then(contents => {
+                // Call the processData function and pass the contents as an argument
+                typeWriter(contents, 0, qa[0], num);
+            })
+            .catch(error => console.error('Error reading file:', error));
+    }
+
+    function typeWriter(txt, i, q, num) {
+        var imgText = document.getElementById("imgtext-" + num);
+        var answer = document.getElementById("answer-" + num);
+        if (imgText.innerHTML == q) {
+            for (let k = 0; k < 5; k++) {
+                if (i < txt.length) {
+                    if (txt.charAt(i) == "\\") {
+                        answer.innerHTML += "\n";
+                        i += 1;
+                    } else {
+                        answer.innerHTML += txt.charAt(i);
+                    }
+                    i++;
+                }
+            }
+            hljs.highlightAll();
+            timeoutIds.push(setTimeout(typeWriter, 1, txt, i, q, num));
+        }
+    }
+
+  function handleVideoEnd(videoElement) {
+    // Pause the video
+    videoElement.pause();
+    // Wait for 5 seconds
+    setTimeout(() => {
+      // Play the video
+      videoElement.play();
+    }, 5000); // 5000 milliseconds = 5 seconds
+  }
+
+  // Get the video elements
+  var overviewVideo = document.getElementById('teaser1');
+  var tasksVideo = document.getElementById('teaser2');
+  overviewVideo.removeAttribute('loop');
+  tasksVideo.removeAttribute('loop');
+
+  // Add event listeners for the 'ended' event
+  overviewVideo.addEventListener('ended', function() { handleVideoEnd(overviewVideo); });
+  tasksVideo.addEventListener('ended', function() { handleVideoEnd(tasksVideo);
+
+  });
 
   </script>
 
@@ -104,16 +193,45 @@
       <div class="columns is-centered">
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title">GenSim: Generating Robotic Simulation Tasks via Large Language Models</h1>
-          <div class="is-size-5 publication-authors">
+  <!--         <div class="is-size-5 publication-authors">
             <span class="author-block">Anonymous ICLR Submission</span>
           </div>
-
-
+ -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Lirui Wang<sup>1</sup>,</span>
+            <span class="author-block">Yiyang Ling*<sup>2,3</sup>,</span>
+            <span class="author-block">Zhecheng Yuan*<sup>4</sup>,</sup>    
+          </div>
+          <div class="is-size-5 publication-authors">    
+            <span class="author-block">Mohit Shridhar<sup>5</sup>,</sup>
+            <span class="author-block">Chen Bao<sup>6</sup>,</sup>
+            <span class="author-block">Yuzhe Qin<sup>3</sup>,</sup>
+            <span class="author-block">Bailin Wang<sup>2</sup>,</sup>
+            <span class="author-block">Huazhe Xu<sup>4</sup>,</sup>
+            <span class="author-block">Xiaolong Wang<sup>3</sup></sup>              
+            </span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">MIT CSAIL<sup>1</sup>,</span>
+            <span class="author-block">Shanghai Jiao Tong University<sup>2</sup>,</span>
+            <span class="author-block">UCSD<sup>3</sup>,</span>
+            <span class="author-block">Tsinghua University<sup>4</sup>,</sup>
+            <span class="author-block">UW<sup>5</sup>,</sup>
+            <span class="author-block">CMU<sup>6</sup>,</sup>            
+            </span>
+          </div>  
+          <br>
+          <div class="is-size-5 publication-authors">
+            Workshop on Language Grounding and Robot Learning (<a style="color: red;">Workshop Best Paper</a>), CoRL 2023
+          </div>  
+          <div class="is-size-5 publication-authors">
+            International Conference on Learning Representations (<a style="color: red;">Oral</a>), ICLR 2024
+          </div>                    
           <div class="column has-text-centered">
             <div class="publication-links">
               <!-- PDF Link. -->
               <span class="link-block">
-                <a href="https://openreview.net/forum?id=OI3RoHoWAN"
+                <a href="https://arxiv.org/abs/2310.01361"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -133,55 +251,29 @@
                 </a>
               </span>
 
+              <span class="link-block">
+                <a href="https://x.com/LiruiWang1/status/1711417032653324354?s=20"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-twitter"></i>
+                  </span>
+                  <span>Twitter</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://github.com/liruiw/GenSim"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Github</span>
+                </a>
+              </span>              
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-widescreen">
-    <div class="rows">
-    <!-- Animation. -->
-    <h2 class="title is-3  has-text-centered" style="color: red;">Rebuttal New Experiments </h2>
-
-    <div class="container  ">
-    <!-- Paper video. -->
-    <div class="columns is-centered has-text-centered">
- 
-      <div class="column is-half">
-        <h3 class="title is-3">GenSim</h3>
-        <div class="columns">
-          <div class="column has-text-centered">
-            Task  
-            <div class="select is-small">     
-              <select id="single-menu-tasks-gpt" onchange="updateRealWorldGenSim()">
-        <option value="organize-kits">organize-kits</option>
-        <option value="sort-garbage">sort-garbage</option>        
-        <option value="place-bread">place-bread</option>
-              </select>
-            </div>
-            instance
-            <div class="select is-small">
-              <select id="single-menu-instances-gpt" onchange="updateRealWorldGenSim()">
-              <option value="01" selected="selected">01</option>
-              <option value="02">02</option>
-              </select>
-            </div>
-            <br/>
-            <br/>       
-            <video id="single-task-result-video-gpt"
-                   controls
-                   muted
-                   autoplay
-                   loop
-                   width="80%">
-              <source src="media/realworld_task_videos/sort-garbage/gpt70_01.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
-        </div>
   </div>
 </section>
 
@@ -305,7 +397,6 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
 	<option value="container-block-sorting">container-block-sorting</option>
 	<option value="color-coordinated-ball-stacking">color-coordinated-ball-stacking</option>
 	<option value="cylinder-ring-stack">cylinder-ring-stack</option>
-	<option value="color-coordinated-box-in-pallet">color-coordinated-box-in-pallet</option>
 	<option value="stack-three-layer-red-wall">stack-three-layer-red-wall</option>
 	<option value="color-ordered-blocks-on-pallet">color-ordered-blocks-on-pallet</option>
 	<option value="build-cylinder-structure">build-cylinder-structure</option>
@@ -333,8 +424,6 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
 	<option value="color-coordinated-zone-stacking">color-coordinated-zone-stacking</option>
 	<option value="create-pyramid-with-color-coded-ells">create-pyramid-with-color-coded-ells</option>
 	<option value="color-coordinated-arch-construction">color-coordinated-arch-construction</option>
-	<option value="color-coordinated-sphere-insertion">color-coordinated-sphere-insertion</option>
-	<option value="color-sorted-blocks-on-pallet-with-barrier">color-sorted-blocks-on-pallet-with-barrier</option>
 	<option value="symmetric-block-stand-assembly">symmetric-block-stand-assembly</option>
 	<option value="put-kit-in-bowl">put-kit-in-bowl</option>
 	<option value="move-piles-along-line">move-piles-along-line</option>
@@ -345,13 +434,11 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
 	<option value="build-car">build-car</option>
 	<option value="stack-cylinder-on-bowl">stack-cylinder-on-bowl</option>
 	<option value="color-coded-blocks-on-corner">color-coded-blocks-on-corner</option>
-	<option value="color-coordinated-block-insertion-in-pallets">color-coordinated-block-insertion-in-pallets</option>
 	<option value="move-kit-from-zone-to-cylinder">move-kit-from-zone-to-cylinder</option>
 	<option value="multi-level-insertion-and-zone-matching">multi-level-insertion-and-zone-matching</option>
 	<option value="color-coordinated-insertion">color-coordinated-insertion</option>
 	<option value="colored-cylinder-zone-sorting">colored-cylinder-zone-sorting</option>
 	<option value="ball-in-bowl-obstacle-course-new">ball-in-bowl-obstacle-course-new</option>
-	<option value="colorful-block-tower-on-cylinder-base">colorful-block-tower-on-cylinder-base</option>
 	<option value="manipulating-two-ropes">manipulating-two-ropes</option>
 	<option value="construct-corner-building">construct-corner-building</option>
 	<option value="color-coordinated-block-bowl-sorting">color-coordinated-block-bowl-sorting</option>
@@ -360,10 +447,6 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
 	<option value="color-sequenced-sphere-placement">color-sequenced-sphere-placement</option>
 	<option value="construct-corner-blocks">construct-corner-blocks</option>
 	<option value="sort-insert-color-coordinated-blocks">sort-insert-color-coordinated-blocks</option>
-	<option value="color-coordinated-sphere-cylinder-matching">color-coordinated-sphere-cylinder-matching</option>
-	<option value="color-coordinated-block-corner-alignment">color-coordinated-block-corner-alignment</option>
-	<option value="color-sequenced-block-in-container">color-sequenced-block-in-container</option>
-	<option value="color-ordered-container-arrangement">color-ordered-container-arrangement</option>
 	<option value="symmetric-block-bridge-construction">symmetric-block-bridge-construction</option>
 	<option value="color-coordinated-corner-placement">color-coordinated-corner-placement</option>
 	<option value="connect-boxes-with-rope">connect-boxes-with-rope</option>
@@ -444,8 +527,11 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
               <source src="media/all_task_videos/cylinder-ring-stack-videos/000003.mp4"
                       type="video/mp4">
             </video>
+
           </div>
+
         </div>
+    <!--       <button style="background-color: #4CAF50; color: white;" onclick="populateDemo(document.getElementById('single-menu-tasks').value, 1)">Show Code</button> -->
         </div>        
         <div class="column is-half">
 
@@ -501,33 +587,27 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
 <section class="section">
   <div class="container is-max-widescreen">
 
-    <div class="rows">
+<div class="rows">
+  <div class="row is-full-width half-width">
+    <h2 class="title is-3"><span class="dcliport">GenSim</span></h2>
 
+    <h3 class="title is-4">Overview</h3>
+    <video id="teaser1" muted loop autoplay height="100%">
+      <source src="media/common/pipeline_video.mp4" type="video/mp4">
+    </video>   
+    <br/>
 
-    <!-- Animation. -->
-    <div class="rows   ">
-      <div class="row is-full-width half-width">
-        <h2 class="title is-3"><span class="dcliport">GenSim</span></h2>
+    <!-- Re-rendering. -->
+    <h3 class="title is-4">Tasks</h3>
+    <video id="teaser2" muted loop autoplay height="100%">
+      <source src="media/common/generated_task_video.mp4" type="video/mp4">
+    </video>   
+    <br/>
+    <br/>
 
-        <h3 class="title is-4">Overview</h3>
-          <video id="teaser" autoplay muted loop height="100%">
-            <source src="media/common/pipeline_video.mp4"
-                    type="video/mp4">
-          </video>   
-        <br/>
+  </div>
+</div>
 
-        <!-- Re-rendering. -->
-        <h3 class="title is-4">Tasks</h3>
-          <video id="teaser" autoplay muted loop height="100%">
-            <source src="media/common/generated_task_video.mp4"
-                    type="video/mp4">
-          </video>   
-        <br/>
-        <br/>
-
-       </div>
-
-    </div>
 
   </div>
 </section>
@@ -558,12 +638,10 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
 				<option value="block-zone">block-zone</option>
 				<option value="block-tower-corner">block-tower-corner</option>
 				<option value="block-in-bowl-in-zone">block-in-bowl-in-zone</option>
-				<option value="align-cylinder-in-zone">align-cylinder-in-zone</option>
 				<option value="align-block-zone">align-block-zone</option>
-        <option value="block-in-bowl-in-zone">block-in-bowl-in-zone</option>
-        <option value="align-cylinder-in-zone">align-cylinder-in-zone</option>
-        <option value="align-block-zone">align-block-zone</option>
-
+        <option value="organize-kits">organize-kits</option>
+        <option value="sort-garbage">sort-garbage</option>        
+        <option value="place-bread">place-bread</option>
               </select>
             </div>
             instance
@@ -605,13 +683,10 @@ We use GPT4 to expand the existing benchmark by ten times to over 100 tasks, on 
 				<option value="block-zone">block-zone</option>
 				<option value="block-tower-corner">block-tower-corner</option>
 				<option value="block-in-bowl-in-zone">block-in-bowl-in-zone</option>
-				<option value="align-cylinder-in-zone">align-cylinder-in-zone</option>
 				<option value="align-block-zone">align-block-zone</option>
-
-        <option value="block-in-bowl-in-zone">block-in-bowl-in-zone</option>
-        <option value="align-cylinder-in-zone">align-cylinder-in-zone</option>
-        <option value="align-block-zone">align-block-zone</option>
-
+        <option value="organize-kits">organize-kits</option>
+        <option value="sort-garbage">sort-garbage</option>        
+        <option value="place-bread">place-bread</option>        
               </select>
             </div>
             instance
